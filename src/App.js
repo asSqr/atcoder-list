@@ -8,10 +8,6 @@ const colors = {
   gray: "rgba(0, 0, 0, 0.75)"
 };
 
-const TextArea = styled.textarea`
-
-`;
-
 const Wrapper = styled.div`
   width: 100vw;
   display: flex;
@@ -41,12 +37,6 @@ const StyledIFrame = styled.iframe`
   border: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
-const FetchButton = styled(Button)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 function App() {
   const [user_id, set_user_id] = React.useState(undefined);
   const [submissions, set_submissions] = React.useState([]);
@@ -55,9 +45,13 @@ function App() {
     try {
       const fetch_url = `https://kenkoooo.com/atcoder/atcoder-api/results?user=${user_id}`;
       const res = await fetch(fetch_url);
-      const user_submissions = await res.json();
+      let user_submissions = await res.json();
 
       console.log(user_submissions);
+      console.log(user_id);
+
+      user_submissions.sort( (a, b) => b.epoch_second - a.epoch_second );
+      user_submissions = user_submissions.splice( 0, 20 );
 
       set_submissions(user_submissions);
     } catch(e) {
@@ -70,7 +64,7 @@ function App() {
       <Header>
         AtCoder User Submission List (ver. α)
 
-        <TextArea onClick={e => set_user_id(e.target.value)}></TextArea>
+        <input type="text" onChange={e => set_user_id(e.target.value)}></input>
 
         <Button onClick={async () => { await fetch_user_submissions(); }}>Fetch User Submissons</Button>
       </Header>
