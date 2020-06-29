@@ -64,7 +64,10 @@ function App() {
       <Header>
         AtCoder User Submission List (ver. α)
 
-        <input type="text" onChange={e => set_user_id(e.target.value)}></input>
+        <div>
+          User id:
+          <input type="text" onChange={e => set_user_id(e.target.value)}></input>
+        </div>
 
         <Button onClick={async () => { await fetch_user_submissions(); }}>Fetch User Submissons</Button>
       </Header>
